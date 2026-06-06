@@ -88,11 +88,78 @@
         }
 
         .pronouns {
+            position: relative;
             color: #c98cd4;            
             font-size: 0.95rem;
             font-weight: bold;
             margin-top: 4px;
             margin-bottom: 15px;       
+        }
+
+        .tooltip-icon {
+            position: absolute;
+            right: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f6edfc;
+            color: #a46db5;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            cursor: help;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            opacity: 0;
+            width: 180px;
+            background-color: #ffffff;
+            color: #5d4a66;
+            border-radius: 12px;
+            padding: 12px 15px;
+            position: absolute;
+            z-index: 10;
+            bottom: 140%; 
+            left: 50%;
+            transform: translateX(-50%); 
+            border: 2px solid #dcb6f6;
+            box-shadow: 0 5px 15px rgba(220, 182, 246, 0.4);
+            transition: opacity 0.3s ease;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .tooltip-icon:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .tooltip-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #f2e6ff;
+            padding-bottom: 6px;
+        }
+
+        .tooltip-line:last-of-type {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .tooltip-note {
+            font-size: 0.75rem;
+            color: #8c7b96;
+            font-weight: 500;
+            margin-top: -4px;
+            text-align: center;
         }
 
         p {
@@ -152,6 +219,30 @@
             cursor: default;           
         }
 
+        .discord-hover {
+            position: relative;
+            cursor: pointer;
+            margin-left: 5px;
+            color: #c98cd4;
+            transition: color 0.3s ease;
+        }
+
+        .discord-hover:hover {
+            color: #a46db5;
+        }
+
+        .discord-hover:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .discord-tooltip {
+            width: max-content;
+            padding: 8px 15px;
+            bottom: 150%;
+            display: block;
+        }
+
         .spec-list {
             width: 100%;
             display: flex;
@@ -159,7 +250,6 @@
             gap: 12px;
         }
 
-        /* Used for PC Specs (Label on left, value on right) */
         .spec-item {
             display: flex;
             justify-content: space-between;
@@ -173,7 +263,6 @@
             border: 2px dashed #dcb6f6;
         }
 
-        /* NEW: Used for Games (Text perfectly centered) */
         .game-item {
             display: flex;
             justify-content: center;
@@ -211,13 +300,41 @@
         <div class="container">
             <img src="images/pfp.jpg" alt="Profile Picture" class="pfp">
             <h1>ErrorzMade</h1>
-            <div class="pronouns">(she/her)</div>
+            
+            <div class="pronouns">
+                (she/her)
+                <div class="tooltip-icon">?
+                    <div class="tooltip-text">
+                        <div class="tooltip-line">
+                            <span>she/her</span>
+                            <span>Yes</span>
+                        </div>
+                        <div class="tooltip-line">
+                            <span>they/them</span>
+                            <span>Fine</span>
+                        </div>
+                        <div class="tooltip-line">
+                            <span>he/him</span>
+                            <span>No</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <p>GHD Commissioner & Mediocre Block Slicer!</p>
         </div>
 
         <div class="socials-container">
             <a href="https://x.com/ErrorzMadez" target="_blank" class="social-btn">Twitter</a>
-            <div class="discord-box">Discord: errorz.</div>
+            
+            <div class="discord-box">
+                Discord: 
+                <div class="discord-hover">
+                    errorz.
+                    <div class="tooltip-text discord-tooltip">feel free to add me :)</div>
+                </div>
+            </div>
+            
             <a href="https://www.tiktok.com/@errorzmade" target="_blank" class="social-btn">TikTok</a>
             <a href="https://github.com/ErrorzMade" target="_blank" class="social-btn">GitHub</a>
             <a href="https://www.twitch.tv/errorismade" target="_blank" class="social-btn">Twitch</a>
@@ -225,7 +342,7 @@
         </div>
 
         <div class="games-card">
-            <h2>Games I Like To Play</h2>
+            <h2>Games I Like</h2>
             <div class="spec-list">
                 <div class="game-item">Phasmophobia</div>
                 <div class="game-item">Overwatch</div>
