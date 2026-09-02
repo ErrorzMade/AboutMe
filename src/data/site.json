@@ -1,0 +1,39 @@
+{
+  "name": "ErrorzMade",
+  "tagline": "GHD Commissioner & mediocre block slicer.",
+  "avatar": "/images/pfp.jpg",
+  "discord": "errorz.",
+
+  "pronouns": {
+    "shown": "she/her",
+    "detail": [
+      { "form": "she/her", "ok": "Yes" },
+      { "form": "they/them", "ok": "Fine" },
+      { "form": "he/him", "ok": "No" }
+    ]
+  },
+
+  "socials": [
+    { "label": "Twitter", "href": "https://x.com/ErrorzMadez" },
+    { "label": "Bluesky", "href": "https://bsky.app/profile/errorz.xyz" },
+    { "label": "GitHub", "href": "https://github.com/ErrorzMade" },
+    { "label": "Twitch", "href": "https://www.twitch.tv/errorismade" },
+    { "label": "YouTube", "href": "https://www.youtube.com/@Errorz_" }
+  ],
+
+  "games": [
+    "Phasmophobia",
+    "Overwatch",
+    "Life Is Strange",
+    "Beat Saber",
+    "Lost Records: Bloom & Rage"
+  ],
+
+  "specs": [
+    { "label": "OS", "value": "Windows & Fedora dual boot" },
+    { "label": "CPU", "value": "Ryzen 7800X3D" },
+    { "label": "GPU", "value": "4070 Ti Trinity OC" },
+    { "label": "RAM", "value": "32GB DDR5" },
+    { "label": "SSD", "value": "4TB & 2TB Samsung 990 PRO" }
+  ]
+}

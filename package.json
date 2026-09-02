@@ -1,0 +1,29 @@
+{
+  "name": "errorz-xyz",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ErrorzMade/AboutMe.git"
+  },
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/ErrorzMade/AboutMe/issues"
+  },
+  "homepage": "https://github.com/ErrorzMade/AboutMe#readme",
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.2.10"
+  },
+  "private": true,
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,178 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import { Image } from 'astro:assets';
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const words = (post.body ?? '').split(/\s+/).filter(Boolean).length;
+const minutes = Math.max(1, Math.round(words / 220));
+---
+
+<Base
+  title={post.data.title}
+  description={post.data.description}
+  image={post.data.cover?.src}
+  article={{ published: post.data.date, tags: post.data.tags }}
+>
+  <article class="page">
+    <header class="head">
+      <a class="back" href="/blog/">&larr; All posts</a>
+      <p class="meta">
+        <FormattedDate date={post.data.date} />
+        <span class="dot" aria-hidden="true">&middot;</span>
+        <span class="read">{minutes} min read</span>
+      </p>
+      <h1>{post.data.title}</h1>
+      <p class="muted lede">{post.data.description}</p>
+      {post.data.tags.length > 0 && (
+        <div class="tag-row">
+          {post.data.tags.map((t) => <a class="tag" href={`/tags/${t}/`}>{t}</a>)}
+        </div>
+      )}
+    </header>
+
+    {post.data.cover && (
+      <figure class="cover">
+        <Image
+          src={post.data.cover}
+          alt={post.data.coverAlt}
+          widths={[480, 800, 1200, 1600]}
+          sizes="(max-width: 940px) 100vw, 940px"
+          loading="eager"
+        />
+        {post.data.coverAlt && <figcaption>{post.data.coverAlt}</figcaption>}
+      </figure>
+    )}
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    align-items: flex-start;
+    padding-block: 10px 30px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 34px;
+  }
+  .back {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--ink-dim);
+  }
+  .back:hover { color: var(--accent); }
+  .meta { display: flex; align-items: center; gap: 9px; }
+  .dot { color: var(--ink-faint); }
+  .read {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  h1 { font-size: clamp(2rem, 6vw, 2.9rem); }
+  .lede { max-width: var(--measure); font-size: 1.05rem; }
+
+  .cover {
+    margin: 0 0 34px;
+  }
+  .cover :global(img) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+  }
+  .cover figcaption {
+    margin-top: 10px;
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+  }
+</style>
+
+<style is:global>
+  .prose {
+    max-width: var(--measure);
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: color-mix(in srgb, var(--ink) 88%, var(--ink-dim));
+  }
+  .prose > * + * { margin-top: 1.15em; }
+  .prose h2 {
+    font-size: 1.55rem;
+    margin-top: 2em;
+    color: var(--ink);
+  }
+  .prose h3 {
+    font-size: 1.2rem;
+    margin-top: 1.7em;
+    color: var(--ink);
+  }
+  .prose strong { color: var(--ink); font-weight: 800; }
+  .prose ul, .prose ol { padding-left: 1.3em; }
+  .prose li + li { margin-top: 0.4em; }
+  .prose blockquote {
+    margin-inline: 0;
+    padding: 2px 0 2px 20px;
+    border-left: 2px solid var(--accent-deep);
+    color: var(--ink-dim);
+    font-style: italic;
+  }
+  .prose code:not(pre code) {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 1px 6px;
+    color: var(--accent-bright);
+  }
+  .prose pre {
+    background: var(--bg-deep) !important;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+    overflow-x: auto;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+  .prose img {
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+  }
+  .prose hr {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin-block: 2.2em;
+  }
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.93rem;
+  }
+  .prose th, .prose td {
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .prose th { color: var(--accent); font-weight: 800; }
+</style>

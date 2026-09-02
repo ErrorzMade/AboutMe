@@ -1,0 +1,336 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PostList from '../components/PostList.astro';
+import { site } from '../data/site';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<Base title={site.name}>
+  <div class="page stack">
+
+    <section class="card hero">
+      <img class="pfp" src={site.avatar} alt="" width="120" height="120" />
+      <h1>{site.name}</h1>
+
+      <div class="pronoun-wrap">
+        <span class="pronoun-label">{site.pronouns.shown}</span>
+        <button type="button" class="pronoun-toggle" aria-expanded="false" aria-controls="pronoun-detail">
+          <span aria-hidden="true">?</span>
+          <span class="visually-hidden">Which pronouns are okay?</span>
+        </button>
+        <div class="pronoun-detail" id="pronoun-detail" hidden>
+          <dl>
+            {site.pronouns.detail.map((p) => (
+              <div class="pronoun-row">
+                <dt>{p.form}</dt>
+                <dd>{p.ok}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+
+      <p class="tagline">{site.tagline}</p>
+
+      <ul class="socials">
+        {site.socials.map((s) => (
+          <li>
+            <a class="chip" href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a>
+          </li>
+        ))}
+        <li>
+          <button type="button" class="chip discord" data-handle={site.discord}>
+            <span class="discord-face">Discord:&nbsp;<b>{site.discord}</b></span>
+            <span class="discord-done" aria-hidden="true">Copied!</span>
+            <span class="note">click to copy &middot; feel free to add me :)</span>
+          </button>
+          <p class="visually-hidden" role="status" id="copy-status"></p>
+        </li>
+      </ul>
+    </section>
+
+    {posts.length > 0 && (
+      <section class="card">
+        <div class="section-head">
+          <p class="eyebrow">Recently written</p>
+          <a class="more" href="/blog/">All posts &rarr;</a>
+        </div>
+        <PostList posts={posts} />
+      </section>
+    )}
+
+    <div class="two-up">
+      <section class="card">
+        <h2>Games I like</h2>
+        <ul class="plain">
+          {site.games.map((g) => <li class="row centered">{g}</li>)}
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>PC specs</h2>
+        <ul class="plain">
+          {site.specs.map((s) => (
+            <li class="row split">
+              <span class="key">{s.label}</span>
+              <span>{s.value}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+
+  </div>
+</Base>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.pronoun-toggle');
+  const detail = document.querySelector<HTMLElement>('.pronoun-detail');
+
+  if (toggle && detail) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      detail.hidden = !open;
+    };
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+    document.addEventListener('click', (e) => {
+      if (!(e.target as Element)?.closest('.pronoun-wrap')) setOpen(false);
+    });
+  }
+
+  const discord = document.querySelector<HTMLButtonElement>('.discord');
+  const status = document.querySelector<HTMLElement>('#copy-status');
+
+  discord?.addEventListener('click', async () => {
+    const handle = discord.dataset.handle ?? '';
+    try {
+      await navigator.clipboard.writeText(handle);
+      discord.classList.add('copied');
+      if (status) status.textContent = `Copied ${handle} to clipboard`;
+      setTimeout(() => discord.classList.remove('copied'), 1400);
+    } catch {
+      const face = discord.querySelector('.discord-face');
+      if (face) {
+        const range = document.createRange();
+        range.selectNodeContents(face);
+        const sel = window.getSelection();
+        sel?.removeAllRanges();
+        sel?.addRange(range);
+      }
+      if (status) status.textContent = 'Press Cmd or Ctrl + C to copy';
+    }
+  });
+</script>
+
+<style>
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-block: 36px;
+  }
+  .pfp {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent-deep);
+    box-shadow: 0 0 0 6px var(--glow-soft), 0 0 34px var(--glow);
+  }
+  h1 {
+    font-size: clamp(2rem, 6vw, 2.6rem);
+    margin-top: 18px;
+  }
+  .tagline {
+    color: var(--ink-dim);
+    max-width: 42ch;
+    margin-top: 10px;
+  }
+
+  .pronoun-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 7px;
+  }
+  .pronoun-label {
+    color: var(--accent);
+    font-weight: 800;
+    font-size: 0.95rem;
+  }
+  .pronoun-toggle {
+    width: 19px;
+    height: 19px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    color: var(--accent);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    transition: border-color 0.2s var(--ease);
+  }
+  .pronoun-toggle:hover { border-color: var(--accent-deep); }
+  .pronoun-detail {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: max-content;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 12px 15px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55);
+  }
+  .pronoun-detail dl { margin: 0; display: flex; flex-direction: column; gap: 7px; }
+  .pronoun-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 26px;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+  .pronoun-row dt { color: var(--ink-dim); }
+  .pronoun-row dd { margin: 0; color: var(--accent); }
+
+  .socials {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 11px;
+  }
+  .socials li { flex: 1 1 150px; }
+  .chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 11px 16px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 0.92rem;
+    text-decoration: none;
+    transition: transform 0.2s var(--ease), border-color 0.2s var(--ease),
+      color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  }
+  a.chip:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-deep);
+    color: var(--accent-bright);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45), 0 0 18px var(--glow-soft);
+  }
+  .discord {
+    position: relative;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    font-size: 0.92rem;
+    width: 100%;
+  }
+  .discord:hover {
+    border-color: var(--accent-deep);
+    box-shadow: 0 0 18px var(--glow-soft);
+  }
+  .discord b { color: var(--accent); font-weight: 800; }
+  .discord-done {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    border-radius: inherit;
+    background: var(--surface-2);
+    color: var(--accent-bright);
+    font-weight: 800;
+    opacity: 0;
+    transition: opacity 0.18s var(--ease);
+    pointer-events: none;
+  }
+  .discord.copied .discord-done { opacity: 1; }
+  .note {
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 7px 13px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink-dim);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.22s var(--ease);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+  }
+  .discord:hover .note,
+  .discord:focus-visible .note { opacity: 1; visibility: visible; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .more {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  h2 {
+    font-size: 1.35rem;
+    margin-bottom: 18px;
+  }
+
+  .two-up {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--gap);
+    align-items: start;
+  }
+  .plain { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+  .row {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 10px 15px;
+    font-size: 0.92rem;
+    font-weight: 700;
+  }
+  .row.centered { text-align: center; }
+  .row.split { display: flex; justify-content: space-between; gap: 14px; }
+  .key { color: var(--accent); }
+</style>

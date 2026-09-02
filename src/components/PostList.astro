@@ -1,0 +1,86 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+  showTags?: boolean;
+}
+const { posts, showTags = true } = Astro.props;
+---
+<ol class="posts">
+  {posts.map((post) => (
+    <li>
+      <article class:list={[{ 'has-cover': post.data.cover }]}>
+        {post.data.cover && (
+          <a class="thumb" href={`/blog/${post.id}/`} tabindex="-1" aria-hidden="true">
+            <Image src={post.data.cover} alt="" widths={[160, 320]} sizes="160px" loading="lazy" />
+          </a>
+        )}
+        <div class="body">
+        <FormattedDate date={post.data.date} class="date" />
+        <h3>
+          <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+        </h3>
+        <p class="muted">{post.data.description}</p>
+        {showTags && post.data.tags.length > 0 && (
+          <div class="tag-row">
+            {post.data.tags.map((t) => (
+              <a class="tag" href={`/tags/${t}/`}>{t}</a>
+            ))}
+          </div>
+        )}
+        </div>
+      </article>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .posts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  li + li {
+    border-top: 1px solid var(--line);
+    margin-top: 22px;
+    padding-top: 22px;
+  }
+  article { display: flex; gap: 18px; align-items: start; }
+  .body { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+
+  .thumb {
+    flex: 0 0 auto;
+    width: 112px;
+    display: block;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .thumb :global(img) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s var(--ease);
+  }
+  article:hover .thumb :global(img) { transform: scale(1.05); }
+
+  @media (max-width: 560px) {
+    .thumb { display: none; }
+  }
+  h3 { font-size: 1.3rem; }
+  h3 a {
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s var(--ease);
+  }
+  h3 a:hover { color: var(--accent-bright); }
+  p { font-size: 0.95rem; max-width: var(--measure); }
+  .tag-row { margin-top: 4px; }
+</style>

@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+---
+
+<Base title="Blog">
+  <div class="page stack">
+    <header class="head">
+      <p class="eyebrow">Writing</p>
+      <h1>Blog</h1>
+      {tags.length > 0 && (
+        <div class="tag-row filters">
+          {tags.map((t) => <a class="tag" href={`/tags/${t}/`}>{t}</a>)}
+        </div>
+      )}
+    </header>
+
+    {posts.length > 0 ? (
+      <div class="card"><PostList posts={posts} /></div>
+    ) : (
+      <div class="card"><p class="muted">Nothing here yet. Soon.</p></div>
+    )}
+  </div>
+</Base>
+
+<style>
+  .stack { display: flex; flex-direction: column; gap: var(--gap); }
+  .head { padding-block: 12px 4px; }
+  h1 { font-size: clamp(2rem, 6vw, 2.7rem); margin-top: 8px; }
+  .lede { margin-top: 10px; max-width: var(--measure); }
+  .filters { margin-top: 18px; }
+</style>

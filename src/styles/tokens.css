@@ -1,0 +1,33 @@
+:root {
+  --bg:          #16111C;
+  --bg-deep:     #100C15;
+  --surface:     #241B2E;
+  --surface-2:   #2C2038;
+
+  --line:        #33263F;
+  --line-soft:   #291F34;
+
+  --ink:         #EFE4F5;
+  --ink-dim:     #A092AC;
+  --ink-faint:   #7C7088;
+
+  --accent:        #C79BE8;
+  --accent-bright: #DDB8F5;
+  --accent-deep:   #8E63AE;
+  --glow:          rgba(199, 155, 232, 0.28);
+  --glow-soft:     rgba(199, 155, 232, 0.10);
+
+  --radius:    22px;
+  --radius-sm: 14px;
+  --radius-pill: 999px;
+
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body:    "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono:    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --measure: 68ch;
+  --page:    980px;
+  --gap:     22px;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}

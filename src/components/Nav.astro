@@ -1,0 +1,73 @@
+---
+import { site } from '../data/site';
+
+const path = Astro.url.pathname;
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/blog/', label: 'Blog' },
+];
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+<header>
+  <nav class="page" aria-label="Main">
+    <a class="wordmark" href="/">{site.name}</a>
+    <ul>
+      {links.map((l) => (
+        <li>
+          <a href={l.href} class:list={[{ on: isActive(l.href) }]} aria-current={isActive(l.href) ? 'page' : undefined}>
+            {l.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<style>
+  header {
+    border-bottom: 1px solid var(--line-soft);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-block: 15px;
+  }
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .wordmark:hover { color: var(--accent-bright); }
+  ul {
+    display: flex;
+    gap: 22px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  ul a {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--ink-dim);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+  }
+  ul a:hover { color: var(--ink); }
+  ul a.on {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+</style>
