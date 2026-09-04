@@ -9,7 +9,7 @@ draft: false
 ---
 Hi, I want to share an early look at whats coming in 1.3.0. This update will specifically focus on **FINALLY** adding map support to the overlay. 
 
-To start, there will be a new hotkey. **M** (default). When pressed, you will be greated 
+To start, there will be a new hotkey. **M** (default). When pressed, you will be greeted 
 with a menu that looks something like this (subject to change)
 
 ![](mapsoverview.png)
