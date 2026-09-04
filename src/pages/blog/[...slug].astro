@@ -60,6 +60,40 @@ const minutes = Math.max(1, Math.round(words / 220));
       <Content />
     </div>
   </article>
+
+  <dialog class="lightbox" aria-label="Full size image">
+    <div class="lightbox-inner"><img alt="" /></div>
+  </dialog>
+
+  <script>
+    const dialog = document.querySelector<HTMLDialogElement>('.lightbox');
+    const full = dialog?.querySelector('img');
+
+    if (dialog && full) {
+      document.querySelectorAll<HTMLImageElement>('.prose img').forEach((img) => {
+        img.tabIndex = 0;
+        img.setAttribute('role', 'button');
+        img.setAttribute('aria-label', img.alt ? `${img.alt} - view full size` : 'View full size');
+
+        const open = () => {
+          full.src = img.currentSrc || img.src;
+          full.alt = img.alt;
+          dialog.showModal();
+        };
+
+        img.addEventListener('click', open);
+        img.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            open();
+          }
+        });
+      });
+
+      // Click anywhere (image included) closes it; Esc is handled by <dialog>.
+      dialog.addEventListener('click', () => dialog.close());
+    }
+  </script>
 </Base>
 
 <style>
@@ -111,12 +145,24 @@ const minutes = Math.max(1, Math.round(words / 220));
 
 <style is:global>
   .prose {
-    max-width: var(--measure);
     font-size: 1.02rem;
     line-height: 1.75;
     color: color-mix(in srgb, var(--ink) 88%, var(--ink-dim));
   }
   .prose > * + * { margin-top: 1.15em; }
+
+  /* Text stays at a comfortable reading width... */
+  .prose > p,
+  .prose > h2,
+  .prose > h3,
+  .prose > ul,
+  .prose > ol,
+  .prose > blockquote,
+  .prose > pre,
+  .prose > table { max-width: var(--measure); }
+
+  /* ...but a paragraph that's just a screenshot uses the whole column. */
+  .prose > p:has(> img) { max-width: none; }
   .prose h2 {
     font-size: 1.55rem;
     margin-top: 2em;
@@ -156,8 +202,43 @@ const minutes = Math.max(1, Math.round(words / 220));
     line-height: 1.6;
   }
   .prose img {
+    height: auto;
     border-radius: var(--radius-sm);
     border: 1px solid var(--line);
+    cursor: zoom-in;
+  }
+
+  /* Full-size viewer */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    margin: 0;
+    border: none;
+    padding: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-width: 100vw;
+    max-height: 100dvh;
+    background: transparent;
+    overscroll-behavior: contain;
+  }
+  .lightbox::backdrop { background: rgba(8, 5, 12, 0.88); }
+  .lightbox img {
+    width: auto;
+    height: auto;
+    max-width: 96vw;
+    max-height: 94dvh;
+    margin: auto;
+    border-radius: var(--radius-sm);
+    cursor: zoom-out;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  }
+  .lightbox-inner {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    cursor: zoom-out;
   }
   .prose hr {
     border: none;

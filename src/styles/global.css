@@ -25,7 +25,7 @@ body {
   flex-direction: column;
 }
 
-img { max-width: 100%; display: block; }
+img { max-width: 100%; height: auto; display: block; }
 
 a { color: var(--accent); text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent); }
 a:hover { color: var(--accent-bright); }
