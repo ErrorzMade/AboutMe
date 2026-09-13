@@ -7,7 +7,7 @@ tags:
   - Preview
 draft: false
 ---
-## MAP PROGRESS: 9 out of 17
+## MAP PROGRESS: 11 out of 17
 
 Hi, I want to share an early look at whats coming in 1.3.0. This update will specifically focus on **FINALLY** adding map support to the overlay. 
 
