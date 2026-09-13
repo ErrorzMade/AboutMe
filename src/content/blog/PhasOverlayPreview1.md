@@ -1,5 +1,5 @@
 ---
-title: PhasOverlay 1.3.0 Preview
+title: "PhasOverlay 1.3.0 Preview #1"
 description: An early look at what's coming in 1.3.0
 date: 2026-09-04
 tags:
