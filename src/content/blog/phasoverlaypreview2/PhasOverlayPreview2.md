@@ -1,7 +1,7 @@
 ---
 title: "PhasOverlay 1.3.0 Preview #2"
 description: A bigger look at whats coming in 1.3.0
-date: 2026-09-13
+date: 2026-09-17
 tags:
   - PhasOverlay
   - Preview
@@ -9,7 +9,7 @@ draft: true
 ---
 Hi again, over the past few weeks I have been working on adding new maps to the overlay, refining the maps UI and just overall improving the quality of the overlay. Today I would like to show off some more of the work I've done for PhasOverlay and the changes you should expect.
 
-To begin, this is what the brand new map menu looks like. 
+To begin, this is what the brand new map menu looks like versus the old one.
 
 (ADD IMAGE HERE)
 
@@ -22,6 +22,10 @@ As you can see, it almost looks the same as the original design but it has just 
 (ADD IMAGE HERE)
 
 This is likely gonna receive some slight changes before releasee, so don't expect that part to look identical when it comes out as I'm not 100% happy with the functionality. 
+
+A feature that will be supported is the ability to hold M (default) to overlay a 2d overview of the map over your screen. This will allow you to check where a cursed object is or a power box is without having to tab out to the overlay, nice and convenient.
+
+(ADD VIDEO HERE)
 
 That's really it when it comes to everything coming in the maps section of the update. I've wanted to add maps for a long time but just had trouble with getting started on making them. If you're curious as to how it works I take the top down view of the map in Phasmophobia from the van, overlay it and trace the walls before labelling the rooms and doors. The maps may not be 1 to 1 accurate, but they're accurate enough. I hope to eventually add support for Yokai tests (like sound distance) and other stuff, but that wouldn't come anytime soon. As I write this, I have completed 11/17 maps, and I'm slightly behind due to education starting back up, so I've been mainly working on the overlay between Thursday and Sunday. So PLEASE bare with here.
 
