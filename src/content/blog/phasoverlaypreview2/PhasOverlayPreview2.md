@@ -7,6 +7,8 @@ tags:
   - Preview
 draft: false
 ---
+## **MAP PROGRESS: 13/17**
+
 Hi again, over the past few weeks I have been working on adding new maps to the overlay, refining the maps UI and just overall improving the quality of the overlay. Today I would like to show off some more of the work I've done for PhasOverlay and the changes you should expect.
 
 To begin, this is what the brand new map menu looks like!
