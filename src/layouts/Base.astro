@@ -3,12 +3,14 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
+import { themes, defaultThemeColor, type ThemeName } from '../data/themes';
 
 interface Props {
   title: string;
   description?: string;
   image?: string;
   article?: { published: Date; tags: string[] };
+  theme?: ThemeName;
 }
 
 const {
@@ -16,14 +18,17 @@ const {
   description = site.tagline,
   image = site.avatar,
   article,
+  theme,
 } = Astro.props;
+
+const look = theme ? themes[theme] : null;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site);
 const fullTitle = title === site.name ? title : `${title} · ${site.name}`;
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme={theme}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -31,7 +36,7 @@ const fullTitle = title === site.name ? title : `${title} · ${site.name}`;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/images/header.ico" />
-    <meta name="theme-color" content="#16111C" />
+    <meta name="theme-color" content={look?.themeColor ?? defaultThemeColor} />
     <meta name="color-scheme" content="dark" />
 
     <meta property="og:site_name" content={site.name} />
@@ -48,12 +53,16 @@ const fullTitle = title === site.name ? title : `${title} · ${site.name}`;
 
     <link rel="alternate" type="application/rss+xml" title="ErrorzMade" href="/rss.xml" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Nunito:wght@400;600;700;800&display=swap"
-    />
+    {(look?.webfonts ?? true) && (
+      <Fragment>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Nunito:wght@400;600;700;800&display=swap"
+        />
+      </Fragment>
+    )}
   </head>
 
   <body>

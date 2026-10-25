@@ -25,6 +25,7 @@ const minutes = Math.max(1, Math.round(words / 220));
   description={post.data.description}
   image={post.data.cover?.src}
   article={{ published: post.data.date, tags: post.data.tags }}
+  theme={post.data.theme}
 >
   <article class="page">
     <header class="head">
@@ -147,7 +148,7 @@ const minutes = Math.max(1, Math.round(words / 220));
   .prose {
     font-size: 1.02rem;
     line-height: 1.75;
-    color: color-mix(in srgb, var(--ink) 88%, var(--ink-dim));
+    color: var(--ink-body);
   }
   .prose > * + * { margin-top: 1.15em; }
 

@@ -5,6 +5,7 @@ date: 2026-09-04
 tags:
   - PhasOverlay
   - Preview
+theme: phasoverlay
 draft: false
 ---
 Hi, I want to share an early look at whats coming in 1.3.0. This update will specifically focus on **FINALLY** adding map support to the overlay. 

@@ -1,0 +1,87 @@
+/**
+ * Per-post themes.
+ *
+ * Everything here is scoped to [data-theme="..."], which Base.astro puts on
+ * <html> when a post asks for it. A post without a theme is untouched.
+ *
+ * A theme is mostly a different set of values for the tokens in tokens.css.
+ * The handful of rules that follow each block are the details a token cannot
+ * carry on its own.
+ *
+ * Registry (valid names, theme-color, fonts): src/data/themes.ts
+ */
+
+/* ------------------------------------------------------------------ *
+ * PhasOverlay
+ *
+ * The app's Default theme: purple on near-black. Rounded cards, a soft
+ * black glow instead of hard shadows, thin grey borders, and one accent
+ * doing all the work. The reading scale stays the site's own, since the
+ * app's 14px body is sized for an overlay and not for prose.
+ * ------------------------------------------------------------------ */
+[data-theme="phasoverlay"] {
+  --bg:          #111112;
+  --bg-deep:     #0B0B0C;
+  --surface:     #1C1C1F;
+  --surface-2:   #2A2A2E;
+
+  --line:        #2A2A2E;
+  --line-soft:   #202023;
+  --line-strong: #3F3F46;
+
+  --ink:         #FFFFFF;
+  --ink-body:    #DDDDDD;
+  --ink-dim:     #AAAAAA;
+  --ink-faint:   #888888;
+
+  /* Grey for meta, so the accent only ever carries meaning. */
+  --ink-stamp:   #888888;
+
+  --accent:        #B455FF;
+  --accent-bright: #C98BFF;
+  --accent-deep:   #7A33B8;
+  --glow:          rgba(180, 85, 255, 0.30);
+  --glow-soft:     transparent;
+
+  --radius:    8px;
+  --radius-sm: 6px;
+
+  --shadow-card: 0 0 24px rgba(0, 0, 0, 0.55);
+
+  --title-rule: linear-gradient(90deg, var(--accent), transparent);
+
+  --font-display: "Segoe UI", system-ui, -apple-system, Inter, sans-serif;
+  --font-body:    "Segoe UI", system-ui, -apple-system, Inter, sans-serif;
+
+  /* Quartic ease-out, like the app's animations. */
+  --ease: cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+/* The signature detail: a short accent bar under the title, fading out. */
+[data-theme="phasoverlay"] main h1::after {
+  content: "";
+  display: block;
+  width: 94px;
+  height: 3px;
+  margin-top: 14px;
+  border-radius: 2px;
+  background: var(--title-rule);
+}
+
+/* Section headings carry the app's hairline, running out to the right. */
+[data-theme="phasoverlay"] .prose h2 {
+  padding-bottom: 10px;
+  background-image: linear-gradient(90deg, var(--line-strong), transparent);
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 100% 1px;
+}
+
+/* Labels are grey in the app. The accent is kept for meaning. */
+[data-theme="phasoverlay"] .eyebrow {
+  color: var(--ink-faint);
+  letter-spacing: 0.12em;
+}

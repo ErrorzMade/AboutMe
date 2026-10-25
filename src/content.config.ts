@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { themeNames } from './data/themes';
 
 const blog = defineCollection({
   loader: glob({
@@ -41,6 +42,17 @@ const blog = defineCollection({
 
       cover: image().optional(),
       coverAlt: z.string().default(''),
+
+      /**
+       * Optional per-post look, defined in src/styles/themes.css.
+       * Leave it out (or empty) and the post uses the site's own theme.
+       * A name that isn't a real theme fails the build instead of
+       * quietly rendering plain.
+       */
+      theme: z.preprocess(
+        (v) => (v === '' || v === null ? undefined : v),
+        z.enum(themeNames).optional(),
+      ),
 
       draft: z.boolean().default(false),
     }),
