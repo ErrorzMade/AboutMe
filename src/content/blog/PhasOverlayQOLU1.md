@@ -1,9 +1,9 @@
 ---
-title: PhasOverlay QOL Update
-description: A look at the countless improvements coming to PhasOverlay
-date: 2026-10-09
+title: PhasOverlay 1.4.0 Preview
+description: A look at the new features and improvements coming to PhasOverlay in 1.4.0
+date: 2026-10-26
 tags:
   - PhasOverlay
-  - QOL
+  - Preview
 draft: true
 ---
